@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHAND COMPUTER COURSE</title>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #222;
+    }
+
+    header {
+      background: #123c69;
+      color: white;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 22px;
+    }
+
+    nav button {
+      background: white;
+      color: #123c69;
+      border: none;
+      padding: 9px 14px;
+      margin: 4px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #123c69, #1d75b9);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h2 {
+      font-size: 35px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      margin-bottom: 25px;
+    }
+
+    .hero button {
+      background: #ffd43b;
+      color: #222;
+      border: none;
+      padding: 13px 25px;
+      border-radius: 7px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #123c69;
+    }
+
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .course-card {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .course-card h3 {
+      color: #123c69;
+      margin-bottom: 10px;
+    }
+
+    .form-box {
+      max-width: 500px;
+      margin: 35px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    }
+
+    .form-box h2 {
+      text-align: center;
+      color: #123c69;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .main-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 13px;
+      background: #123c69;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .main-btn:hover {
+      background: #0b2d50;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .switch button {
+      border: none;
+      background: none;
+      color: #1d75b9;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+      text-align: center;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .dashboard {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    }
+
+    .dashboard h2 {
+      color: #123c69;
+      margin-bottom: 15px;
+    }
+
+    .dashboard-card {
+      padding: 20px;
+      margin-top: 15px;
+      background: #f4f7fb;
+      border-radius: 8px;
+    }
+
+    .logout {
+      background: #dc3545 !important;
+      color: white !important;
+    }
+
+    footer {
+      margin-top: 50px;
+      background: #123c69;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .hero h2 {
+        font-size: 27px;
+      }
+
+      header {
+        text-align: center;
+        justify-content: center;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>CHAND COMPUTER COURSE</h1>
+
+    <nav>
+      <button onclick="showPage('home')">Home</button>
+      <button onclick="showPage('register')">Register</button>
+      <button onclick="showPage('login')">Login</button>
+      <button id="dashboardBtn" class="hidden" onclick="showPage('dashboard')">
+        Dashboard
+      </button>
+      <button id="logoutBtn" class="logout hidden" onclick="logout()">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+
+  <!-- HOME PAGE -->
+  <section id="homePage">
+
+    <div class="hero">
+      <h2>Learn Computer Skills Online</h2>
+      <p>
+        Welcome to CHAND COMPUTER COURSE.
+        Learn computer skills step by step from anywhere.
+      </p>
+
+      <button onclick="showPage('register')">
+        START LEARNING
+      </button>
+    </div>
+
+    <div class="container">
+
+      <h2 class="section-title">
+        Our Courses
+      </h2>
+
+      <div class="courses">
+
+        <div class="course-card">
+          <h3>Computer Basics</h3>
+          <p>
+            Learn basic computer operations,
+            keyboard, mouse, files and folders.
+          </p>
+        </div>
+
+        <div class="course-card">
+          <h3>Microsoft Word</h3>
+          <p>
+            Learn document creation,
+            formatting, tables and printing.
+          </p>
+        </div>
+
+        <div class="course-card">
+          <h3>Microsoft Excel</h3>
+          <p>
+            Learn spreadsheets, formulas,
+            calculations and data management.
+          </p>
+        </div>
+
+        <div class="course-card">
+          <h3>Internet & Email</h3>
+          <p>
+            Learn internet browsing,
+            email and online services.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- REGISTER PAGE -->
+  <section id="registerPage" class="hidden">
+
+    <div class="form-box">
+
+      <h2>Student Registration</h2>
+
+      <form id="registerForm">
+
+        <label>Full Name</label>
+        <input
+          type="text"
+          id="regName"
+          placeholder="Enter your full name"
+          required
+        >
+
+        <label>Phone Number</label>
+        <input
+          type="tel"
+          id="regPhone"
+          placeholder="Enter phone number"
+          required
+        >
+
+        <label>Email Address</label>
+        <input
+          type="email"
+          id="regEmail"
+          placeholder="Enter email address"
+          required
+        >
+
+        <label>Select Course</label>
+        <select id="regCourse" required>
+          <option value="">-- Select Course --</option>
+          <option value="Computer Basics">Computer Basics</option>
+          <option value="Microsoft Word">Microsoft Word</option>
+          <option value="Microsoft Excel">Microsoft Excel</option>
+          <option value="Internet & Email">Internet & Email</option>
+        </select>
+
+        <label>Password</label>
+        <input
+          type="password"
+          id="regPassword"
+          placeholder="Create password"
+          minlength="6"
+          required
+        >
+
+        <button class="main-btn" type="submit">
+          CREATE ACCOUNT
+        </button>
+
+      </form>
+
+      <div id="registerMessage" class="message"></div>
+
+      <div class="switch">
+        Already have an account?
+        <button onclick="showPage('login')">
+          Login here
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- LOGIN PAGE -->
+  <section id="loginPage" class="hidden">
+
+    <div class="form-box">
+
+      <h2>Student Login</h2>
+
+      <form id="loginForm">
+
+        <label>Email Address</label>
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="Enter email"
+          required
+        >
+
+        <label>Password</label>
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Enter password"
+          required
+        >
+
+        <button class="main-btn" type="submit">
+          LOGIN
+        </button>
+
+      </form>
+
+      <div id="loginMessage" class="message"></div>
+
+      <div class="switch">
+        Don't have an account?
+        <button onclick="showPage('register')">
+          Register here
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- DASHBOARD -->
+  <section id="dashboardPage" class="hidden">
+
+    <div class="container">
+
+      <div class="dashboard">
+
+        <h2>Student Dashboard</h2>
+
+        <p>
+          Welcome,
+          <strong id="studentName">Student</strong>!
+        </p>
+
+        <div class="dashboard-card">
+          <h3>My Profile</h3>
+          <p>
+            <strong>Name:</strong>
+            <span id="profileName">-</span>
+          </p>
+
+          <p>
+            <strong>Phone:</strong>
+            <span id="profilePhone">-</span>
+          </p>
+
+          <p>
+            <strong>Email:</strong>
+            <span id="profileEmail">-</span>
+          </p>
+
+          <p>
+            <strong>Course:</strong>
+            <span id="profileCourse">-</span>
+          </p>
+        </div>
+
+        <div class="dashboard-card">
+          <h3>My Course</h3>
+          <p>
+            Course lessons, videos, notes,
+            tests and progress will appear here.
+          </p>
+        </div>
+
+        <div class="dashboard-card">
+          <h3>Certificate</h3>
+          <p>
+            Your certificate will appear here
+            after completing the course.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <footer>
+    <p>
+      © 2026 CHAND COMPUTER COURSE
+    </p>
+    <p>
+      Online Computer Learning Platform
+    </p>
+  </footer>
+
+
+  <script>
+
+    /* =====================================================
+       SUPABASE CONNECTION
+       ===================================================== */
+
+    const SUPABASE_URL =
+      "https://hrxdxbrqmvlgfqfsasim.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      sb_publishable_rnn72SWf4sp8w9xogyrJow_rRN-FC5B
+
+    const sb =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* =====================================================
+       PAGE NAVIGATION
+       ===================================================== */
+
+    function showPage(page) {
+
+      document.getElementById("homePage")
+        .classList.add("hidden");
+
+      document.getElementById("registerPage")
+        .classList.add("hidden");
+
+      document.getElementById("loginPage")
+        .classList.add("hidden");
+
+      document.getElementById("dashboardPage")
+        .classList.add("hidden");
+
+
+      if (page === "home") {
+        document.getElementById("homePage")
+          .classList.remove("hidden");
+      }
+
+      if (page === "register") {
+        document.getElementById("registerPage")
+          .classList.remove("hidden");
+      }
+
+      if (page === "login") {
+        document.getElementById("loginPage")
+          .classList.remove("hidden");
+      }
+
+      if (page === "dashboard") {
+        document.getElementById("dashboardPage")
+          .classList.remove("hidden");
+      }
+
+      window.scrollTo(0, 0);
+    }
+
+
+    /* =====================================================
+       MESSAGE FUNCTION
+       ===================================================== */
+
+    function showMessage(elementId, message, type) {
+
+      const element =
+        document.getElementById(elementId);
+
+      element.textContent = message;
+
+      element.className =
+        "message " + type;
+
+      element.style.display = "block";
+    }
+
+
+    /* =====================================================
+       REGISTER STUDENT
+       ===================================================== */
+
+    document.getElementById("registerForm")
+      .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const fullName =
+          document.getElementById("regName").value.trim();
+
+        const phone =
+          document.getElementById("regPhone").value.trim();
+
+        const email =
+          document.getElementById("regEmail").value.trim();
+
+        const course =
+          document.getElementById("regCourse").value;
+
+        const password =
+          document.getElementById("regPassword").value;
+
+
+        showMessage(
+          "registerMessage",
+          "Creating your account...",
+          "success"
+        );
+
+
+        const { data, error } =
+          await sb.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+              data: {
+                full_name: fullName,
+                phone: phone,
+                course: course
+              }
+            }
+
+          });
+
+
+        if (error) {
+
+          showMessage(
+            "registerMessage",
+            error.message,
+            "error"
+          );
+
+          return;
+        }
+
+
+        /*
+          If Supabase allows immediate login,
+          save the student's profile.
+        */
+
+        if (data.user && data.session) {
+
+          await saveProfile(
+            data.user,
+            fullName,
+            phone,
+            course
+          );
+
+          showMessage(
+            "registerMessage",
+            "Account created successfully!",
+            "success"
+          );
+
+          setTimeout(function() {
+            loadDashboard();
+          }, 1000);
+
+        } else {
+
+          showMessage(
+            "registerMessage",
+            "Account created. Please check your email to confirm your account, then login.",
+            "success"
+          );
+
+        }
+
+      });
+
+
+    /* =====================================================
+       LOGIN STUDENT
+       ===================================================== */
+
+    document.getElementById("loginForm")
+      .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const email =
+          document.getElementById("loginEmail").value.trim();
+
+        const password =
+          document.getElementById("loginPassword").value;
+
+
+        showMessage(
+          "loginMessage",
+          "Logging in...",
+          "success"
+        );
+
+
+        const { data, error } =
+          await sb.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+        if (error) {
+
+          showMessage(
+            "loginMessage",
+            error.message,
+            "error"
+          );
+
+          return;
+        }
+
+
+        await loadDashboard();
+
+      });
+
+
+    /* =====================================================
+       SAVE PROFILE
+       ===================================================== */
+
+    async function saveProfile(
+      user,
+      fullName,
+      phone,
+      course
+    ) {
+
+      const { error } =
+        await sb
+          .from("profiles")
+          .upsert({
+
+            id: user.id,
+
+            full_name:
+              fullName ||
+              user.user_metadata?.full_name ||
+              "",
+
+            phone:
+              phone ||
+              user.user_metadata?.phone ||
+              "",
+
+            course:
+              course ||
+              user.user_metadata?.course ||
+              ""
+
+          });
+
+
+      if (error) {
+
+        console.log(
+          "Profile error:",
+          error.message
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOAD STUDENT DASHBOARD
+       ===================================================== */
+
+    async function loadDashboard() {
+
+      const {
+        data: { user }
+      } = await sb.auth.getUser();
+
+
+      if (!user) {
+
+        showPage("login");
+
+        return;
+      }
+
+
+      const { data: profile } =
+        await sb
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .maybeSingle();
+
+
+      /*
+        If profile doesn't exist,
+        create it from registration metadata.
+      */
+
+      if (!profile) {
+
+        await saveProfile(
+
+          user,
+
+          user.user_metadata?.full_name || "",
+
+          user.user_metadata?.phone || "",
+
+          user.user_metadata?.course || ""
+
+        );
+
+      }
+
+
+      const { data: finalProfile } =
+        await sb
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .maybeSingle();
+
+
+      document.getElementById("studentName")
+        .textContent =
+        finalProfile?.full_name ||
+        user.user_metadata?.full_name ||
+        "Student";
+
+
+      document.getElementById("profileName")
+        .textContent =
+        finalProfile?.full_name || "-";
+
+
+      document.getElementById("profilePhone")
+        .textContent =
+        finalProfile?.phone || "-";
+
+
+      document.getElementById("profileEmail")
+        .textContent =
+        user.email || "-";
+
+
+      document.getElementById("profileCourse")
+        .textContent =
+        finalProfile?.course || "-";
+
+
+      document.getElementById("dashboardBtn")
+        .classList.remove("hidden");
+
+      document.getElementById("logoutBtn")
+        .classList.remove("hidden");
+
+
+      showPage("dashboard");
+
+    }
+
+
+    /* =====================================================
+       LOGOUT
+       ===================================================== */
+
+    async function logout() {
+
+      await sb.auth.signOut();
+
+      document.getElementById("dashboardBtn")
+        .classList.add("hidden");
+
+      document.getElementById("logoutBtn")
+        .classList.add("hidden");
+
+      showPage("home");
+
+    }
+
+
+    /* =====================================================
+       CHECK EXISTING LOGIN
+       ===================================================== */
+
+    async function checkUser() {
+
+      const {
+        data: { session }
+      } = await sb.auth.getSession();
+
+
+      if (session) {
+
+        document.getElementById("dashboardBtn")
+          .classList.remove("hidden");
+
+        document.getElementById("logoutBtn")
+          .classList.remove("hidden");
+
+      }
+
+    }
+
+
+    checkUser();
+
+  </script>
+
+</body>
+</html>
