@@ -273,7 +273,7 @@
         Our Courses
       </h2>
 
-      <div class="courses">
+      <div class="courses" id="coursesList">
 
         <div class="course-card">
           <h3>Computer Basics</h3>
@@ -917,7 +917,38 @@
 
 
     checkUser();
+async function loadCourses() {
+  const coursesList = document.getElementById("coursesList");
 
+  const { data, error } = await sb
+    .from("courses")
+    .select("id, title, description")
+    .order("id", { ascending: true });
+
+  if (error) {
+    console.error("Error loading courses:", error);
+    return;
+  }
+
+  coursesList.innerHTML = "";
+
+  data.forEach(course => {
+    const card = document.createElement("div");
+    card.className = "course-card";
+
+    const title = document.createElement("h3");
+    title.textContent = course.title;
+
+    const description = document.createElement("p");
+    description.textContent = course.description;
+
+    card.appendChild(title);
+    card.appendChild(description);
+    coursesList.appendChild(card);
+  });
+}
+
+loadCourses();
   </script>
 
 </body>
