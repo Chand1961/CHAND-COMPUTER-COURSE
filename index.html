@@ -895,9 +895,9 @@ async function loadCourses() {
     .order("id", { ascending: true });
 
   if (error) {
-    console.error("Error loading courses:", error);
-    return;
-  }
+  alert("COURSE ERROR: " + error.message);
+  return;
+}
 
   coursesList.innerHTML = "";
 
